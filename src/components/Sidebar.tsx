@@ -137,7 +137,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
       <Aside isOpen={isOpen}>
         <Header>
           <Logo>
-            Ivaneudo<span>Blog</span>
+            Ivaneando<span>.me</span>
           </Logo>
           <ActionButtons>
             <IconButton

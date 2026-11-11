@@ -81,7 +81,7 @@ export default function Home({ posts, onToggleTheme, isDark }: HomeProps) {
   return (
     <>
       <Head>
-        <title>IvaneudoBlog</title>
+        <title>Ivaneando.me</title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
       </Head>
 
@@ -91,7 +91,7 @@ export default function Home({ posts, onToggleTheme, isDark }: HomeProps) {
             <Menu size={24} />
           </MobileMenuButton>
           <MobileLogo>
-            Ivaneudo<span>Blog</span>
+            Ivaneando<span>.me</span>
           </MobileLogo>
         </MobileHeader>
 
