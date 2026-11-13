@@ -1,9 +1,6 @@
-import React from 'react';
 import styled from '@emotion/styled';
-import ReactMarkdown from 'react-markdown';
-import remarkGfm from 'remark-gfm';
 
-const Container = styled.div`
+export const Container = styled.div`
   max-width: 860px;
   width: 100%;
   margin: 0 auto;
@@ -70,35 +67,3 @@ const Container = styled.div`
     padding-left: 1.5rem;
   }
 `;
-
-interface MarkdownViewerProps {
-  content: string;
-}
-
-export const MarkdownViewer: React.FC<MarkdownViewerProps> = ({ content }) => {
-  return (
-    <Container>
-      <ReactMarkdown
-        remarkPlugins={[remarkGfm]}
-        components={{
-          a: ({ href, children, ...props }) => {
-            const isExternal = href?.startsWith('http');
-
-            return (
-              <a
-                href={href}
-                target={isExternal ? '_blank' : undefined}
-                rel={isExternal ? 'noopener noreferrer' : undefined}
-                {...props}
-              >
-                {children}
-              </a>
-            );
-          },
-        }}
-      >
-        {content}
-      </ReactMarkdown>
-    </Container>
-  );
-};
