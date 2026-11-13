@@ -127,7 +127,12 @@ ivaneudo-blog/
 ```
 
 ## 👤 Autor
-Desenvolvido por Ivaneudo.
-- GitHub: [@Ivaneudo](https://github.com/Ivaneudo)
-- LinkedIn: [ivaneudo-carvlho](https://www.linkedin.com/in/ivaneudo-carvalho/)
+
+| <img src="https://github.com/Ivaneudo.png?size=115" alt="Img do autor" style="border-radius: 50%; border: 2px solid #ccc; box-shadow: 3px 3px 10px rgba(0,0,0,0.1);"> |
+| :---: |
+| Desenvolvido por Ivaneudo. |
+
 - Instagram: [@ivaneudo.dev](https://instagram.com/ivaneudo.dev/)
+- LinkedIn: [ivaneudo-carvlho](https://www.linkedin.com/in/ivaneudo-carvalho/)
+- Portfólio: [ivaneudo.dev](https://ivaneudo-dev.vercel.app/)
+- GitHub: [@Ivaneudo](https://github.com/Ivaneudo)
