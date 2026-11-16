@@ -6,11 +6,13 @@ export const Wrapper = styled.div`
   background-color: ${({ theme }) => theme.background};
 `;
 
-export const Main = styled.main`
+export const Main = styled.main<{ isSidebarOpen: boolean }>`
   flex: 1;
-  margin-left: 280px;
+  margin-left: ${({ isSidebarOpen }) => (isSidebarOpen ? '280px' : '0')};
   padding: 2.5rem 2rem;
+  padding-top: ${({ isSidebarOpen }) => (isSidebarOpen ? '2.5rem' : '4.5rem')};
   min-height: 100vh;
+  transition: margin-left 0.3s ease;
 
   @media (max-width: 768px) {
     margin-left: 0;

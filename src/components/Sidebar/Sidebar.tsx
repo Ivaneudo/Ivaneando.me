@@ -1,15 +1,17 @@
-import React from 'react';
-import { Paintbrush, X, FileText } from 'lucide-react';
+import React, { useEffect } from 'react';
+import { Paintbrush, X, FileText, PanelLeft, PanelLeftClose, PanelLeftOpen } from 'lucide-react';
 import { PostData } from '@/lib/posts';
 import { 
   ActionButtons, 
   Aside, 
   CloseButton, 
+  DesktopToggleButton, 
   Header, 
   IconButton, 
   Logo, 
   NavItem, 
   NavList, 
+  OpenButton, 
   Overlay 
 } from './Styles';
 
@@ -19,21 +21,30 @@ interface SidebarProps {
   onSelectPost: (slug: string) => void;
   isOpen: boolean;
   onClose: () => void;
+  onToggle: () => void;
   onToggleTheme: () => void;
   isDark: boolean;
 }
 
 export const Sidebar: React.FC<SidebarProps> = ({
-  posts,
-  selectedSlug,
-  onSelectPost,
-  isOpen,
-  onClose,
-  onToggleTheme,
-  isDark,
+  posts, selectedSlug, onSelectPost, isOpen,
+  onClose, onToggle, onToggleTheme, isDark,
 }) => {
+  useEffect(() => {
+    const handler = (e: KeyboardEvent) => {
+      if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'b') {
+        e.preventDefault();
+        onToggle();
+      }
+    };
+    window.addEventListener('keydown', handler);
+    return () => window.removeEventListener('keydown', handler);
+  }, [onToggle]);
   return (
     <>
+      <OpenButton isOpen={isOpen} onClick={onToggle} title="Abrir menu (Ctrl+B)">
+        <PanelLeftOpen size={20} />
+      </OpenButton>
       <Overlay isOpen={isOpen} onClick={onClose} />
       <Aside isOpen={isOpen}>
         <Header>
@@ -50,6 +61,9 @@ export const Sidebar: React.FC<SidebarProps> = ({
             <CloseButton onClick={onClose} title="Fechar menu">
               <X size={20} />
             </CloseButton>
+            <DesktopToggleButton onClick={onToggle} title="Recolher menu (Ctrl+B)">
+              <PanelLeftClose size={20} />
+            </DesktopToggleButton>
           </ActionButtons>
         </Header>
         <NavList>

@@ -12,6 +12,7 @@ export const Aside = styled.aside<{ isOpen: boolean }>`
   top: 0;
   z-index: 50;
   transition: transform 0.3s ease;
+  transform: ${({ isOpen }) => (isOpen ? 'translateX(0)' : 'translateX(-100%)')};
 
   @media (max-width: 768px) {
     transform: ${({ isOpen }) => (isOpen ? 'translateX(0)' : 'translateX(-100%)')};
@@ -61,8 +62,30 @@ export const IconButton = styled.button`
   }
 `;
 
+export const OpenButton = styled(IconButton)<{ isOpen: boolean }>`
+  position: fixed;
+  top: 1rem;
+  left: 1rem;
+  z-index: 45;
+  background-color: ${({ theme }) => theme.surface};
+  border: 1px solid ${({ theme }) => theme.surfaceBorder};
+  opacity: ${({ isOpen }) => (isOpen ? 0 : 1)};
+  pointer-events: ${({ isOpen }) => (isOpen ? 'none' : 'auto')};
+  transition: opacity 0.2s;
+
+  @media (max-width: 768px) {
+    display: none;
+  }
+`;
+
 export const CloseButton = styled(IconButton)`
   @media (min-width: 769px) {
+    display: none;
+  }
+`;
+
+export const DesktopToggleButton = styled(IconButton)`
+  @media (max-width: 768px) {
     display: none;
   }
 `;

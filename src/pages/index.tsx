@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import Head from 'next/head';
 import { GetStaticProps } from 'next';
 import { getAllPosts, PostData } from '@/lib/posts';
@@ -17,6 +17,13 @@ export default function Home({ posts, onToggleTheme, isDark }: HomeProps) {
   const [selectedSlug, setSelectedSlug] = useState<string>(posts[0]?.slug || '');
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
+  useEffect(() => {
+    if (window.innerWidth > 768) setSidebarOpen(true);
+  }, []);
+
+  const toggleSidebar = useCallback(() => setSidebarOpen((open) => !open), []);
+  const closeSidebar = useCallback(() => setSidebarOpen(false), []);
+
   const currentPost = posts.find((p) => p.slug === selectedSlug) || posts[0];
 
   return (
@@ -34,12 +41,13 @@ export default function Home({ posts, onToggleTheme, isDark }: HomeProps) {
           selectedSlug={selectedSlug}
           onSelectPost={(slug) => setSelectedSlug(slug)}
           isOpen={sidebarOpen}
-          onClose={() => setSidebarOpen(false)}
+          onClose={closeSidebar}
+          onToggle={toggleSidebar}
           onToggleTheme={onToggleTheme}
           isDark={isDark}
         />
 
-        <MainContent>
+        <MainContent isSidebarOpen={sidebarOpen}>
           {currentPost ? (
             <MarkdownViewer content={currentPost.content} />
           ) : (
