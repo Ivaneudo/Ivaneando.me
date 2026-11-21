@@ -1,20 +1,23 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import Head from 'next/head';
-import { GetStaticProps } from 'next';
+import { GetStaticPaths, GetStaticProps } from 'next';
 import { getAllPosts, PostData } from '@/lib/posts';
 import { Sidebar } from '@/components/Sidebar/Sidebar';
 import { MarkdownViewer } from '@/components/MarkdownViewer/MarkdownViewer';
 import { MainContent, PageLayout } from '@/components/PageLyout/PageLyout';
 import { MobileHeader } from '@/components/MobileHeader/MobileHeader';
 
-interface HomeProps {
+interface PageProps {
   posts: PostData[];
+  activeSlug: string;
+}
+
+interface HomeProps extends PageProps {
   onToggleTheme: () => void;
   isDark: boolean;
 }
 
-export default function Home({ posts, onToggleTheme, isDark }: HomeProps) {
-  const [selectedSlug, setSelectedSlug] = useState<string>(posts[0]?.slug || '');
+export default function Home({ posts, activeSlug, onToggleTheme, isDark }: HomeProps) {
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
   useEffect(() => {
@@ -24,12 +27,14 @@ export default function Home({ posts, onToggleTheme, isDark }: HomeProps) {
   const toggleSidebar = useCallback(() => setSidebarOpen((open) => !open), []);
   const closeSidebar = useCallback(() => setSidebarOpen(false), []);
 
-  const currentPost = posts.find((p) => p.slug === selectedSlug) || posts[0];
+  const currentPost = posts.find((post) => post.slug === activeSlug) || posts[0];
+  const pageTitle =
+    currentPost && !currentPost.isPinned ? `${currentPost.title} — Ivaneando.me` : 'Ivaneando.me';
 
   return (
     <>
       <Head>
-        <title>Ivaneando.me</title>
+        <title>{pageTitle}</title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
       </Head>
 
@@ -38,8 +43,7 @@ export default function Home({ posts, onToggleTheme, isDark }: HomeProps) {
 
         <Sidebar
           posts={posts}
-          selectedSlug={selectedSlug}
-          onSelectPost={(slug) => setSelectedSlug(slug)}
+          selectedSlug={currentPost?.slug || ''}
           isOpen={sidebarOpen}
           onClose={closeSidebar}
           onToggle={toggleSidebar}
@@ -59,11 +63,52 @@ export default function Home({ posts, onToggleTheme, isDark }: HomeProps) {
   );
 }
 
-export const getStaticProps: GetStaticProps = async () => {
+export const getStaticPaths: GetStaticPaths = async () => {
   const posts = getAllPosts();
+
+  return {
+    paths: [
+      { params: { slug: [] } },
+      ...posts.map((post) => ({ params: { slug: [post.slug] } })),
+    ],
+    fallback: false,
+  };
+};
+
+export const getStaticProps: GetStaticProps<PageProps> = async ({ params }) => {
+  const posts = getAllPosts();
+  const segments = params?.slug;
+  const requested = Array.isArray(segments) && segments.length > 0 ? segments.join('/') : '';
+  const pinned = posts.find((post) => post.isPinned) ?? posts[0];
+
+  if (!requested) {
+    return {
+      props: {
+        posts,
+        activeSlug: pinned?.slug ?? '',
+      },
+    };
+  }
+
+  const post = posts.find((item) => item.slug === requested);
+
+  if (!post) {
+    return { notFound: true };
+  }
+
+  if (post.isPinned) {
+    return {
+      redirect: {
+        destination: '/',
+        permanent: false,
+      },
+    };
+  }
+
   return {
     props: {
       posts,
+      activeSlug: post.slug,
     },
   };
 };

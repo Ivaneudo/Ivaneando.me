@@ -1,17 +1,18 @@
 import fs from 'fs';
 import path from 'path';
 import matter from 'gray-matter';
+import { PostData } from './post-utils';
 
 const postsDirectory = path.join(process.cwd(), 'posts');
 
-export interface PostData {
-  slug: string;
-  title: string;
-  date: string;
-  formattedDate: string; // Já formatada em DD/MM/AAAA sem erro de fuso
-  isPinned?: boolean;
-  content: string;
-}
+// export interface PostData {
+//   slug: string;
+//   title: string;
+//   date: string;
+//   formattedDate: string; // Já formatada em DD/MM/AAAA sem erro de fuso
+//   isPinned?: boolean;
+//   content: string;
+// }
 
 export function getAllPosts(): PostData[] {
   if (!fs.existsSync(postsDirectory)) {
@@ -61,7 +62,7 @@ export function getAllPosts(): PostData[] {
         dateIso = mtime.toISOString();
       }
 
-      const isPinned = data.pinned === true || slug.toLowerCase().includes('readme');
+      const isPinned = slug.toLowerCase() === '00-readme';
 
       return {
         slug,
@@ -80,3 +81,5 @@ export function getAllPosts(): PostData[] {
     return new Date(b.date).getTime() - new Date(a.date).getTime();
   });
 }
+
+export type { PostData };

@@ -1,4 +1,5 @@
 import styled from '@emotion/styled';
+import Link from 'next/link';
 
 export const Aside = styled.aside<{ isOpen: boolean }>`
   width: 280px;
@@ -99,7 +100,10 @@ export const NavList = styled.nav`
   gap: 0.35rem;
 `;
 
-export const NavItem = styled.button<{ isActive: boolean }>`
+export const NavItem = styled(Link, {
+  shouldForwardProp: (prop) => prop !== 'isActive',
+})<{ isActive: boolean }>`
+  text-decoration: none;
   width: 100%;
   text-align: left;
   background-color: ${({ isActive, theme }) => (isActive ? theme.primary : 'transparent')};

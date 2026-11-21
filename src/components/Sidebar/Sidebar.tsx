@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { Paintbrush, X, FileText, PanelLeft, PanelLeftClose, PanelLeftOpen } from 'lucide-react';
-import { PostData } from '@/lib/posts';
+import { PostData, postPath } from '@/lib/post-utils';
 import { 
   ActionButtons, 
   Aside, 
@@ -18,7 +18,6 @@ import {
 interface SidebarProps {
   posts: PostData[];
   selectedSlug: string;
-  onSelectPost: (slug: string) => void;
   isOpen: boolean;
   onClose: () => void;
   onToggle: () => void;
@@ -27,7 +26,7 @@ interface SidebarProps {
 }
 
 export const Sidebar: React.FC<SidebarProps> = ({
-  posts, selectedSlug, onSelectPost, isOpen,
+  posts, selectedSlug, isOpen,
   onClose, onToggle, onToggleTheme, isDark,
 }) => {
   useEffect(() => {
@@ -70,11 +69,9 @@ export const Sidebar: React.FC<SidebarProps> = ({
           {posts.map((post) => (
             <NavItem
               key={post.slug}
+              href={postPath(post)}
               isActive={selectedSlug === post.slug}
-              onClick={() => {
-                onSelectPost(post.slug);
-                onClose();
-              }}
+              onClick={onClose}
             >
               <FileText size={18} style={{ flexShrink: 0 }} />
               <div style={{ display: 'flex', flexDirection: 'column' }}>
