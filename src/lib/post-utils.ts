@@ -9,5 +9,5 @@ export interface PostData {
 }
 
 export function postPath(post: PostData): string {
-  return `/${post.slug}`;
+  return post.isPinned ? '/' : `/${post.slug}`;
 }

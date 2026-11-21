@@ -96,15 +96,6 @@ export const getStaticProps: GetStaticProps<PageProps> = async ({ params }) => {
     return { notFound: true };
   }
 
-  if (post.isPinned) {
-    return {
-      redirect: {
-        destination: '/',
-        permanent: false,
-      },
-    };
-  }
-
   return {
     props: {
       posts,
